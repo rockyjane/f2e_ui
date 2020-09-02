@@ -14,43 +14,41 @@
     <v-app>
       <v-main>
         <v-container>
-          <template>
-            <v-card max-width="450" class="mx-auto">
-              <v-list three-line class="py-0">
-                <template v-for="list in apiList">
-                  <v-subheader class="grey lighten-3">
-                    <span class="subheader-w green darken-1 mr-2"></span>
-                    {{ list.subheader }}
-                  </v-subheader>
+          <v-card max-width="450" class="mx-auto">
+            <v-list three-line class="py-0">
+              <template v-for="list in apiList">
+                <v-subheader class="grey lighten-3">
+                  <span class="subheader-w green darken-1 mr-2"></span>
+                  {{ list.subheader }}
+                </v-subheader>
+                <v-divider></v-divider>
+                <template v-for="(item, index) in list.orders">
+                  <v-list-item :key="item.name" @click="">
+                    <v-list-item-avatar class="mt-5">
+                      <v-img :src="item.logo" :class="{ 'grayscale': item.status.code > 2 }"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        <v-layout wrap row px-3>
+                          <v-flex xs6 :class="{ 'green--text darken-1--text': item.status.code < 3 }">
+                            {{ item.status.type }}
+                          </v-flex>
+                          <v-flex>
+                            預計出貨： {{ item.date }}
+                          </v-flex>
+                        </v-layout>
+                      </v-list-item-title>
+                      <v-list-item-subtitle v-text="item.name"></v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action class="pt-4">
+                      <v-icon color="grey lighten-1">mdi-chevron-right</v-icon>
+                    </v-list-item-action>
+                  </v-list-item>
                   <v-divider></v-divider>
-                  <template v-for="(item, index) in list.orders">
-                    <v-list-item :key="item.name" @click="">
-                      <v-list-item-avatar class="mt-5">
-                        <v-img :src="item.logo" :class="{ 'grayscale': item.status.code > 2 }"></v-img>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <v-layout wrap row px-3>
-                            <v-flex xs6 :class="{ 'green--text darken-1--text': item.status.code < 3 }">
-                              {{ item.status.type }}
-                            </v-flex>
-                            <v-flex>
-                              預計出貨： {{ item.date }}
-                            </v-flex>
-                          </v-layout>
-                        </v-list-item-title>
-                        <v-list-item-subtitle v-text="item.name"></v-list-item-subtitle>
-                      </v-list-item-content>
-                      <v-list-item-action class="pt-4">
-                        <v-icon color="grey lighten-1">mdi-chevron-right</v-icon>
-                      </v-list-item-action>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                  </template>
                 </template>
-              </v-list>
-            </v-card>
-          </template>
+              </template>
+            </v-list>
+          </v-card>
         </v-container>
       </v-main>
     </v-app>
