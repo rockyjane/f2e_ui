@@ -1,0 +1,9 @@
+.subheader-w {
+    display:inline-block;
+    width: 5px;
+    height: 50%;
+}
+.grayscale{
+    filter:grayscale(1);
+    -webkit-filter:grayscale(1);
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-container>
+          <template>
+            <v-card max-width="450" class="mx-auto">
+              <v-list three-line class="py-0">
+                <template v-for="list in apiList">
+                  <v-subheader class="grey lighten-3">
+                    <span class="subheader-w green darken-1 mr-2"></span>
+                    {{ list.subheader }}
+                  </v-subheader>
+                  <v-divider></v-divider>
+                  <template v-for="(item, index) in list.orders">
+                    <v-list-item :key="item.name" @click="">
+                      <v-list-item-avatar class="mt-5">
+                        <v-img :src="item.logo" :class="{ 'grayscale': item.status.code > 2 }"></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <v-layout wrap row px-3>
+                            <v-flex xs6 :class="{ 'green--text darken-1--text': item.status.code < 3 }">
+                              {{ item.status.type }}
+                            </v-flex>
+                            <v-flex xs6>
+                              預計出貨： {{ item.date }}
+                            </v-flex>
+                          </v-layout>
+                        </v-list-item-title>
+                        <v-list-item-subtitle v-text="item.name"></v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-action class="pt-4">
+                        <v-icon color="grey lighten-1">mdi-chevron-right</v-icon>
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                  </template>
+                </template>
+              </v-list>
+            </v-card>
+          </template>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+
+      data() {
+        return {
+          apiList: [{
+              subheader: '進行中',
+              orders: [],
+            },
+            {
+              subheader: '已完成',
+              orders: [],
+            },
+          ],
+        }
+      },
+      created() {
+        this.getApi();
+      },
+      methods: {
+        async getApi() {
+          try {
+            // let response = await apiClient...()
+            let response = {
+              data: {
+                data: [{
+                    name: 'Livi優活 抽取式衛生紙(100抽x10包x10串/箱)',
+                    logo: 'https://static.oopocket.com/store/iconTreemall@3x.png',
+                    status: {
+                      code: 3,
+                      type: '已取消'
+                    },
+                    date: '107/6/12'
+                  },
+                  {
+                    name: 'BALMUDA The Toaster 百慕達烤麵包機-黑色',
+                    logo: 'https://static.oopocket.com/store/iconTreemall@3x.png',
+                    status: {
+                      code: 2,
+                      type: '已成立'
+                    },
+                    date: '108/7/21'
+                  },
+                  {
+                    name: '贈-短慧萬用鍋HD2133+三合一濾網「LG樂金」韓國原裝...',
+                    logo: 'https://static.oopocket.com/store/iconTreemall@3x.png',
+                    status: {
+                      code: 1,
+                      type: '處理中'
+                    },
+                    date: '108/6/2'
+                  },
+                  {
+                    name: 'Apple AirPds 2',
+                    logo: 'https://static.oopocket.com/store/iconTreemall@3x.png',
+                    status: {
+                      code: 4,
+                      type: '已送達'
+                    },
+                    date: '108/3/02'
+                  }
+                ]
+              },
+            }
+            for (let i in response.data.data) {
+              let data = response.data.data[i],
+                dataCode = data.status.code;
+              if (i > 0 && dataCode <= 2) this.apiList[0].orders.push(data);
+              if (dataCode > 2) this.apiList[1].orders.push(data);
+            }
+          } catch (error) {
+            console.log('err', error)
+          }
+        },
+      },
+    })
+  </script>
+</body>
+
+</html>
